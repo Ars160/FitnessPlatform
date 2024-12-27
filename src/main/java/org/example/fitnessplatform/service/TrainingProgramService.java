@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TrainingProgramService {
     private  final TrainingProgramRepository trainingProgramRepository;
+    private final UserService userService;
 
     public String createTrainingProgram(String title, String description,String type , int duration, MultipartFile image) {
         try {
@@ -26,7 +27,7 @@ public class TrainingProgramService {
             training.setType(type);
             training.setDuration(duration);
             training.setImage(image.getBytes());
-            training.setTrainer();
+            training.setTrainer(userService.getCurrentSessionUser());
             trainingProgramRepository.save(training);
             return "Training saved";
         } catch (IOException e) {
