@@ -15,8 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrainingProgramController {
 
-
-
     private final TrainingProgramService trainingProgramService;
 
     @GetMapping("")
