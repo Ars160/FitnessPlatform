@@ -27,4 +27,10 @@ public class HomeController {
     public String getProfile() {
         return "profile";
     }
+
+    @GetMapping("/training_page")
+    public String getTrainingForm() {
+        System.out.println("dddd");
+        return "createTrainingProgram";
+    }
 }

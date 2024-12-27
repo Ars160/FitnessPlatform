@@ -13,6 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TrainingProgramController {
 
+
+
     private final TrainingProgramService trainingProgramService;
 
     @GetMapping
@@ -31,7 +33,7 @@ public class TrainingProgramController {
     public String createTraining(@RequestParam("title") String title,
                                  @RequestParam("description") String description,
                                  @RequestParam("type") String type,
-                                 @RequestParam("duration") Integer duration,
+                                 @RequestParam("duration") int duration,
                                  @RequestParam("image") MultipartFile image) {
         return trainingProgramService.createTrainingProgram(title, description, type,duration,image);
     }
