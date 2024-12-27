@@ -26,7 +26,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/register", "/api/auth/login", "/register_page").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
                         .requestMatchers("/admin-panel").hasRole("ADMIN")
@@ -34,12 +34,11 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form
-                .loginPage("/api/auth/register_page")
-                .loginProcessingUrl("/authentificate/auth")
+                .loginPage("/login_page")
+                .loginProcessingUrl("/api/auth/login")
                 .usernameParameter("user_email")
                 .passwordParameter("user_password")
-                .failureUrl("/authentificate/sign_in?error=true")
-                .defaultSuccessUrl("/authentificate/profile", true)
+                .defaultSuccessUrl("/api/auth/profile", true)
                 .permitAll()
                 );
 
