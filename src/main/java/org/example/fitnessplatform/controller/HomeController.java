@@ -14,7 +14,7 @@ public class HomeController {
     }
 
     @GetMapping("/register_page")
-    public String showRegiterPage(){
+    public String showRegisterPage(){
         return "register_page";
     }
 
