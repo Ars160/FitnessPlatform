@@ -26,13 +26,22 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/users/register", "/api/users/login").permitAll()
+                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
                         .requestMatchers("/admin-panel").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable());
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form
+                .loginPage("/api/auth/register_page")
+                .loginProcessingUrl("/authentificate/auth")
+                .usernameParameter("user_email")
+                .passwordParameter("user_password")
+                .failureUrl("/authentificate/sign_in?error=true")
+                .defaultSuccessUrl("/authentificate/profile", true)
+                .permitAll()
+                );
 
         return http.build();
     }
