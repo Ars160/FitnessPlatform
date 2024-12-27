@@ -28,6 +28,8 @@ public class User implements UserDetails {
 
     private String password;
 
+    private byte[] avatar;
+
     @ManyToOne
     private Role role;
 

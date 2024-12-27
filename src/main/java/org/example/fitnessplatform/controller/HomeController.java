@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @GetMapping("/home_page")
-    public String getProfile() {
+    public String getHomePage() {
         return "index";
     }
 
@@ -21,5 +21,10 @@ public class HomeController {
     @GetMapping("/login_page")
     public String showLoginPage(){
         return "login_page";
+    }
+
+    @GetMapping("/profile")
+    public String getProfile() {
+        return "profile";
     }
 }
