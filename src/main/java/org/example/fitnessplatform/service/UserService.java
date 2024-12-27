@@ -38,13 +38,13 @@ public class UserService {
         return userMapper.toDTO(user);
     }
 
-    public UserDto updateUser(String newName, MultipartFile newAvatar, String oldPassword, String newPassword) {
+    public String updateUser(String newName, MultipartFile newAvatar, String oldPassword, String newPassword) {
         try {
             User existingUser = getCurrentSessionUser();
 
             if (oldPassword != null && !oldPassword.isEmpty()) {
                 if (!passwordEncoder.matches(oldPassword, existingUser.getPassword())) {
-                    return null;
+                    return "Неправильный старый пароль";
                 }
             }
 
@@ -61,10 +61,10 @@ public class UserService {
             }
 
             userRepository.save(existingUser);
-            return userMapper.toDTO(existingUser);
+            return "Данные успешно обновлены";
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return e.getMessage();
         }
     }
 

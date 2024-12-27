@@ -46,7 +46,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="editProfileForm" th:action="@{/api/users/updateProfile}" th:method="post" enctype="multipart/form-data">
+                        <form id="editProfileForm" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Имя</label>
                                 <input type="text" class="form-control" id="name" name="name">
@@ -63,11 +63,11 @@
                                 <label for="new_password" class="form-label">Новый пароль</label>
                                 <input type="password" class="form-control" id="new_password" name="new_password">
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                <button type="submit" form="editProfileForm" class="btn btn-primary">Сохранить изменения</button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                        <button type="submit" form="editProfileForm" class="btn btn-primary" onclick="submitProfileEdit()">Сохранить изменения</button>
                     </div>
                 </div>
             </div>
@@ -100,41 +100,70 @@
                     console.error('Error loading profile:', httpRequest.statusText);
                 }
             };
-
             httpRequest.send(); // Отправляем запрос
         }
 
+        document.getElementById('editProfileForm').addEventListener('submit', function (event) {
+            event.preventDefault();  // Останавливаем стандартное поведение формы
+
+            const formData = new FormData(this);  // Собираем данные формы, включая файлы
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("POST", "/api/users/updateProfile", true);  // Открываем соединение с сервером
+
+            // Обработчик события при завершении запроса
+            httpRequest.onload = function () {
+                if (httpRequest.status === 200) {
+                    const response = JSON.parse(httpRequest.responseText);  // Получаем ответ в формате JSON
+                    if (response.status === "success") {
+                        window.location.href = "/profile";
+                        console.log(response)
+                        alert("Данные успешно обновлены");
+                    } else {
+                        alert("Ошибка: " + response.message);
+                    }
+                } else {
+                    alert("Ошибка при обновлении данных: " + httpRequest.message);
+                }
+            };
+
+            // Обработчик события ошибки
+            httpRequest.onerror = function () {
+                alert("Произошла ошибка при отправке запроса");
+            };
+
+            // Отправляем данные формы
+            httpRequest.send(formData);
+        });
+
+
         function submitProfileEdit() {
+            const formData = new FormData(document.getElementById("editProfileForm"));
 
             const httpRequest = new XMLHttpRequest();
             httpRequest.open("POST", "/api/users/updateProfile", true);
-            httpRequest.setRequestHeader("Content-Type", "application/json");
-            httpRequest.onreadystatechange = function () {
-                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
-                    console.log(httpRequest.responseText)
-                    loadProfile();
 
-                    window.location.href = '/profile';
+            // Устанавливаем заголовок для отправки данных в формате FormData
+            httpRequest.setRequestHeader("Accept", "application/json");
+
+            httpRequest.onload = function() {
+                if (httpRequest.status === 200) {
+                    const response = JSON.parse(httpRequest.responseText);
+                    if (response.status === "success") {
+                        window.location.href = "/profile";
+                        alert("Данные успешно обновлены");
+                    } else {
+                        alert("Ошибка: " + response.message);
+                        window.location.href = "/profile";
+                    }
+                } else {
+                    alert("Ошибка при обновлении данных: " + JSON.parse(httpRequest.responseText.message));
+                    window.location.href = "/profile";
                 }
-            }
+            };
 
-            let name = document.getElementById("name").value;
-            let avatar = document.getElementById("avatar").value;
-            let old_password = document.getElementById("old_password").value;
-            let new_password = document.getElementById("new_password").value
-
-            let body = {
-                "name": name,
-                "avatar" : avatar,
-                "old_password": old_password,
-                "new_password": new_password
-            }
-
-            body = JSON.stringify(body);
-            httpRequest.send(body);
+            httpRequest.send(formData);  // Отправка данных на сервер
         }
-
-
 
     </script>
     <script src="/js/bootstrap.bundle.js"></script>
