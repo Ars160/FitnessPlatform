@@ -3,12 +3,14 @@ package org.example.fitnessplatform.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.fitnessplatform.model.TrainingProgram;
 import org.example.fitnessplatform.service.TrainingProgramService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/training-programs")
 @RequiredArgsConstructor
 public class TrainingProgramController {
@@ -17,9 +19,11 @@ public class TrainingProgramController {
 
     private final TrainingProgramService trainingProgramService;
 
-    @GetMapping
-    public List<TrainingProgram> getAll(){
-        return trainingProgramService.getAllTrainingPrograms();
+    @GetMapping("")
+    public String getAllTrain(Model model){
+        List<TrainingProgram> trainingPrograms = trainingProgramService.getAllTrainingPrograms();
+        model.addAttribute("programs",trainingPrograms);
+        return "showTrainingProgram";
     }
 
 
@@ -34,8 +38,14 @@ public class TrainingProgramController {
                                  @RequestParam("description") String description,
                                  @RequestParam("type") String type,
                                  @RequestParam("duration") int duration,
-                                 @RequestParam("image") MultipartFile image) {
-        return trainingProgramService.createTrainingProgram(title, description, type,duration,image);
+                                 @RequestParam("image") MultipartFile image, Model model) {
+        if(trainingProgramService.createTrainingProgram(title, description, type,duration,image) != null) {
+            model.addAttribute("error","Train is Saved");
+            return "redirect:/training-programs";
+        }else {
+            model.addAttribute("error", "This isn't saved");
+            return "redirect:/training-programs/create";
+        }
     }
 
     @PutMapping("/{id}")

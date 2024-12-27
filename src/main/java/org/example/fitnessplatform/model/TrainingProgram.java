@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Base64;
+
 @Entity
 @Getter
 @Setter
@@ -19,6 +21,7 @@ public class TrainingProgram {
 
     private String title;
 
+    @Column(name = "image", columnDefinition = "BYTEA")
     private byte[] image;
 
     private String description;
@@ -29,4 +32,12 @@ public class TrainingProgram {
 
     @ManyToOne
     private User trainer;
+
+    // Метод для преобразования изображения в Base64
+    public String getBase64Image() {
+        if (image != null) {
+            return Base64.getEncoder().encodeToString(image);
+        }
+        return null;
+    }
 }
