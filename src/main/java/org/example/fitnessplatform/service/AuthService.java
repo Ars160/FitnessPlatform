@@ -1,5 +1,6 @@
 package org.example.fitnessplatform.service;
 
+import org.example.fitnessplatform.dto.RegistrationDTO;
 import org.example.fitnessplatform.model.Role;
 import org.example.fitnessplatform.model.User;
 import org.example.fitnessplatform.repository.RoleRepository;

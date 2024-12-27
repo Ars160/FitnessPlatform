@@ -35,7 +35,7 @@ public class AuthController {
             return "Нет такого логина";
         } else {
             authService.loginUser(loginUser);
-            return "Вы успешно зарегистрированы";
+            return "Вы успешно вошли";
         }
     }
 }

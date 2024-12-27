@@ -32,15 +32,15 @@ public class SecurityConfig {
                         .requestMatchers("/admin-panel").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form
-                .loginPage("/login_page")
-                .loginProcessingUrl("/api/auth/login")
-                .usernameParameter("user_email")
-                .passwordParameter("user_password")
-                .defaultSuccessUrl("/api/auth/profile", true)
-                .permitAll()
-                );
+                .csrf(csrf -> csrf.disable());
+//                .formLogin(form -> form
+//                .loginPage("/login_page")
+//                .loginProcessingUrl("/api/auth/login")
+//                .usernameParameter("email")
+//                .passwordParameter("password")
+//                .defaultSuccessUrl("/api/auth/profile", true)
+//                .permitAll()
+//                );
 
         return http.build();
     }
