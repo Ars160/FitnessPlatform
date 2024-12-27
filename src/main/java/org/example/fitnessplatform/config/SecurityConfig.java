@@ -29,7 +29,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/register", "/api/users/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
-                        .requestMatchers("/").permitAll()
                         .requestMatchers("/admin-panel").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
