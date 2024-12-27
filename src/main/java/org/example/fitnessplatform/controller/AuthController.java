@@ -15,11 +15,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @GetMapping("/register")
-    public String showRegistrationPage() {
-        return "register"; // имя HTML-шаблона для страницы регистрации
-    }
-
     @PostMapping("/register")
     public String registerUser(@ModelAttribute RegistrationDTO registrationDTO, Model model) {
         User user = new User();
