@@ -32,8 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin-panel").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable())
-                .formLogin(withDefaults());
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
