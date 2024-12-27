@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="main_layout.html">
-<div class="container mt-5 border p-4 rounded" style="width: 400px;" layout:fragment="content">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5 border p-4 rounded" style="width: 400px;">
     <h2>Логин</h2>
 
     <!-- Error Message -->
@@ -43,4 +47,6 @@
     <p class="error mt-2" th:text="${error}"></p>
     <p class="message mt-2" th:text="${message}"></p>
 </div>
+
+</body>
 </html>
