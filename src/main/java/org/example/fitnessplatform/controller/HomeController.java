@@ -32,6 +32,11 @@ public class HomeController {
         return "profile";
     }
 
+    @GetMapping("/admin-panel")
+    public String getAdminPanel() {
+        return "admin-panel";
+    }
+
     @GetMapping("/training_page")
     public String getTrainingForm() {
         System.out.println("dddd");
