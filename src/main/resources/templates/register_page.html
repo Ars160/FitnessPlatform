@@ -9,11 +9,8 @@
     <h2>Регистрация</h2>
 
     <!-- Display error messages -->
-    <div th:if="${param.error}" class="alert alert-danger mt-3">
-        <span th:text="${param.error}"></span>
-    </div>
-    <div th:if="${param.success}" class="alert alert-success mt-3">
-        <span>Вы успешно зарегистрировались! Теперь вы можете войти в систему.</span>
+    <div th:if="${error}" class="alert alert-danger mt-3">
+        <span th:text="${error}"></span>
     </div>
 
     <form th:action="@{'/api/auth/register'}" method="POST" class="mt-4">

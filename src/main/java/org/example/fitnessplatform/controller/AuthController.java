@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -16,7 +18,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute RegistrationDTO registrationDTO, Model model) {
+    public String registerUser(@ModelAttribute RegistrationDTO registrationDTO, Model model) throws IOException {
         User user = new User();
         user.setName(registrationDTO.getName());
         user.setEmail(registrationDTO.getEmail());

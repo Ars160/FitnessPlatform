@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
   <div class="container-fluid mx-1">
     <a class="navbar-brand" href="/">BePro</a>
     <div class="collapse navbar-collapse">
@@ -15,8 +15,8 @@
       </ul>
     </div>
     <div>
-      <button th:onclick="'location.href=\'/logout\' '" class="btn btn-primary">Log out</button>
-      <button th:onclick="'location.href=\'/login\' '" class="btn btn-primary">Login</button>
+      <a sec:authentication="isAuthenticated()" th:href="@{/logout}" class="btn btn-primary">Log out</a>
+      <a sec:authentication="!isAuthenticated()" th:href="@{/login_page}" class="btn btn-primary">Login</a>
     </div>
   </div>
 </nav>

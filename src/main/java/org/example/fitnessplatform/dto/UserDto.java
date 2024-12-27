@@ -13,4 +13,6 @@ public class UserDto {
     private String email;
 
     private String roleName;
+
+    private byte[] avatar;
 }

@@ -21,6 +21,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/{userId}")
+    public UserDto getUserById(@PathVariable Long userId) {
+        return userService.getUserById(userId);
+    }
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void deleteUser(@PathVariable Long userId) {
