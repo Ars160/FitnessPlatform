@@ -42,7 +42,7 @@ public class AuthService implements UserDetailsService {
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             Role userRole = roleRepository.findByName("USER");
-            user.setRoles(Set.of(userRole));
+            user.setRole(userRole);
             return userRepository.save(user);
         }
     }

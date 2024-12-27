@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -27,12 +28,12 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    @ManyToOne
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        return Collections.singleton(role);
     }
 
     @Override
