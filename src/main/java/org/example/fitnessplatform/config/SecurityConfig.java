@@ -33,7 +33,15 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
-                .formLogin(withDefaults());
+                .formLogin(form -> form
+                .loginPage("/api/auth/register_page")
+                .loginProcessingUrl("/authentificate/auth")
+                .usernameParameter("user_email")
+                .passwordParameter("user_password")
+                .failureUrl("/authentificate/sign_in?error=true")
+                .defaultSuccessUrl("/authentificate/profile", true)
+                .permitAll()
+                );
 
         return http.build();
     }

@@ -2,6 +2,7 @@ package org.example.fitnessplatform.service;
 
 import org.example.fitnessplatform.dto.UserDto;
 import org.example.fitnessplatform.dto.UserMapper;
+import org.example.fitnessplatform.model.Role;
 import org.example.fitnessplatform.model.User;
 import org.example.fitnessplatform.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
