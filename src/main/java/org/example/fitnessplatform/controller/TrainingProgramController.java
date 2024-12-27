@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.fitnessplatform.model.TrainingProgram;
 import org.example.fitnessplatform.service.TrainingProgramService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 @RestController
@@ -18,25 +20,34 @@ public class TrainingProgramController {
         return trainingProgramService.getAllTrainingPrograms();
     }
 
-    @GetMapping(value = "/{id}")
-    public TrainingProgram getOne(@PathVariable(name = "id") Long id){
-            return trainingProgramService.getById(id).get();
+
+    @GetMapping("/{id}")
+    public TrainingProgram getTrainingProgramById(@PathVariable Long id) {
+        return trainingProgramService.getById(id).get();
     }
 
-    @PostMapping("/")
-    public TrainingProgram saveTrainingProgram (@RequestBody TrainingProgram book){
-        return trainingProgramService.save(book);
+
+    @PostMapping("/create")
+    public String createTraining(@RequestParam("title") String title,
+                                 @RequestParam("description") String description,
+                                 @RequestParam("type") String type,
+                                 @RequestParam("duration") Integer duration,
+                                 @RequestParam("image") MultipartFile image) {
+        return trainingProgramService.createTrainingProgram(title, description, type,duration,image);
     }
 
     @PutMapping("/{id}")
-    public TrainingProgram updateTrainingProgram(@PathVariable Long id, @RequestBody TrainingProgram updatedTrainingProgram) {
-        return trainingProgramService.update(id, updatedTrainingProgram);
+    public String updateTraining(@PathVariable Long id,
+                                 @RequestParam("title") String newTitle,
+                                 @RequestParam("description") String newDescription,
+                                 @RequestParam("type") String newType,
+                                 @RequestParam("duraiton") Integer newDuration,
+                                 @RequestParam(value = "image", required = false) MultipartFile newImage) {
+        return trainingProgramService.updateTrainingProgram(id, newTitle, newDescription, newType, newDuration, newImage);
     }
 
-
-    @DeleteMapping(value = "/{id}")
-    public void deleteTrainingProgram(@PathVariable(name = "id") Long id){
-        trainingProgramService.delete(id);
-        }
-
+    @DeleteMapping("/{id}")
+    public void deleteTraining(@PathVariable Long id) {
+        trainingProgramService.deleteTrainingProgram(id);
+    }
 }
