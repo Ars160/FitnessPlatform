@@ -19,11 +19,13 @@ public class TrainingProgram {
 
     private String title;
 
+    private byte[] image;
+
     private String description;
 
-    private String type; // Например: кардио, силовые
+    private String type;
 
-    private int duration; // Продолжительность в минутах
+    private int duration;
 
     @ManyToOne
     private User trainer;
