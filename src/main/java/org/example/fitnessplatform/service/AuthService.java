@@ -1,7 +1,5 @@
 package org.example.fitnessplatform.service;
 
-import org.example.fitnessplatform.dto.UserDto;
-import org.example.fitnessplatform.dto.UserMapper;
 import org.example.fitnessplatform.model.Role;
 import org.example.fitnessplatform.model.User;
 import org.example.fitnessplatform.repository.RoleRepository;
@@ -13,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
