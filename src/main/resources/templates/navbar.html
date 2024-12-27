@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3" xmlns:sec="http://www.w3.org/1999/xhtml">
   <div class="container-fluid mx-1">
     <a class="navbar-brand" href="/">BePro</a>
     <div class="collapse navbar-collapse">
@@ -13,6 +13,10 @@
           <a class="nav-link" th:href="@{/profile}">Profile</a>
         </li>
       </ul>
+    </div>
+    <div>
+      <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-primary">Log out</a>
+      <a sec:authorize="!isAuthenticated()" th:href="@{/login_page}" class="btn btn-primary">Login</a>
     </div>
   </div>
 </nav>
