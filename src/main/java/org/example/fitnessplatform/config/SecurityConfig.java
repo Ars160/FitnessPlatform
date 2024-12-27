@@ -28,14 +28,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/register", "/api/auth/login", "/register_page", "/login_page").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
-                        .requestMatchers("/admin-panel").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .requestMatchers("/home_page").permitAll() // Разрешаем доступ ко всем пользователям
+                        .requestMatchers("/admin-panel").hasRole("ADMIN") // Доступ для администраторов
                 )
                 .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
-
-
 }

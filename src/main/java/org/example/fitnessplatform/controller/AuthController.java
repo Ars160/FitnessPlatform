@@ -5,37 +5,46 @@ import org.example.fitnessplatform.dto.RegistrationDTO;
 import org.example.fitnessplatform.model.User;
 import org.example.fitnessplatform.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
+    @GetMapping("/register")
+    public String showRegistrationPage() {
+        return "register"; // имя HTML-шаблона для страницы регистрации
+    }
+
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute RegistrationDTO registrationDTO) {
+    public String registerUser(@ModelAttribute RegistrationDTO registrationDTO, Model model) {
         User user = new User();
         user.setName(registrationDTO.getName());
         user.setEmail(registrationDTO.getEmail());
         user.setPassword(registrationDTO.getPassword());
+
         User newUser = authService.registerUser(user);
         if (newUser == null) {
-            return "Пользователь с такой почтой уже существует";
+            model.addAttribute("error", "Пользователь с такой почтой уже существует");
+            return "redirect:/register_page";
         } else {
-            return "Пользователь успешно зарегистрирован";
+            model.addAttribute("message", "Пользователь успешно зарегистрирован");
+            return "redirect:/login_page"; // Перенаправление на страницу логина
         }
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginDTO loginDTO) {
-        User loginUser = authService.getUserByEmail(loginDTO.getEmail());
-        if (loginUser == null) {
-            return "Нет такого логина";
+    public String login(@ModelAttribute LoginDTO loginDTO, Model model) {
+        if (authService.loginUser(loginDTO)) {
+            return "redirect:/home_page"; // Перенаправление на главную страницу
         } else {
-            authService.loginUser(loginUser);
-            return "Вы успешно вошли";
+            model.addAttribute("error", "Неверные данные для входа");
+            return "redirect:/login_page"; // Перенаправление обратно на страницу логина с ошибкой
         }
     }
 }

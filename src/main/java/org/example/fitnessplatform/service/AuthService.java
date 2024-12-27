@@ -1,5 +1,6 @@
 package org.example.fitnessplatform.service;
 
+import org.example.fitnessplatform.dto.LoginDTO;
 import org.example.fitnessplatform.dto.RegistrationDTO;
 import org.example.fitnessplatform.model.Role;
 import org.example.fitnessplatform.model.User;
@@ -48,18 +49,16 @@ public class AuthService implements UserDetailsService {
         }
     }
 
-    public User loginUser(User user) {
-        User checkUser = userRepository.findByEmail(user.getUsername());
-        System.out.println(checkUser);
+    public boolean loginUser(LoginDTO loginDTO) {
+        User checkUser = userRepository.findByEmail(loginDTO.getEmail());
         if (checkUser != null) {
-            if (!checkUser.getEmail().equals(user.getEmail())
-                    || passwordEncoder.matches(checkUser.getPassword(), user.getPassword())) {
-                return null;
+            if (!passwordEncoder.matches(loginDTO.getPassword(), checkUser.getPassword())) {
+                return false;
             } else {
-                return checkUser;
+                return true;
             }
         } else {
-            return null;
+            return false;
         }
 
     }
