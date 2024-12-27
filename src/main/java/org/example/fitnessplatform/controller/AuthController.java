@@ -28,7 +28,7 @@ public class AuthController {
             return "redirect:/register_page";
         } else {
             model.addAttribute("message", "Пользователь успешно зарегистрирован");
-            return "redirect:/login_page"; // Перенаправление на страницу логина
+            return "redirect:/login_page";
         }
     }
 }
