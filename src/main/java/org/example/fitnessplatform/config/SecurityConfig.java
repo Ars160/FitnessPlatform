@@ -31,7 +31,24 @@ public class SecurityConfig {
                         .requestMatchers("/home_page").permitAll() // Разрешаем доступ ко всем пользователям
                         .requestMatchers("/admin-panel").hasRole("ADMIN") // Доступ для администраторов
                 )
-                .csrf(csrf -> csrf.disable());
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form
+                        .loginPage("/authentificate/sign_in")
+                        .loginProcessingUrl("/authentificate/auth")
+                        .usernameParameter("user_email")
+                        .passwordParameter("user_password")
+                        .failureUrl("/authentificate/sign_in?error=true")
+                        .defaultSuccessUrl("/authentificate/profile", true)
+                        .permitAll()
+                )
+
+                .logout(logout -> logout
+                        .logoutUrl("/authentificate/logout")
+                        .logoutSuccessUrl("/authentificate/sign_in")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                );
 
         return http.build();
     }
