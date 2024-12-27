@@ -12,4 +12,14 @@ public class HomeController {
     public String getProfile() {
         return "index";
     }
+
+    @GetMapping("/register_page")
+    public String showRegiterPage(){
+        return "register_page";
+    }
+
+    @GetMapping("/login_page")
+    public String showLoginPage(){
+        return "login_page";
+    }
 }
