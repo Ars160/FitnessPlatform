@@ -15,7 +15,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody RegistrationDTO registrationDTO) {
+    public String registerUser(@ModelAttribute RegistrationDTO registrationDTO) {
         User user = new User();
         user.setName(registrationDTO.getName());
         user.setEmail(registrationDTO.getEmail());
@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginDTO loginDTO) {
+    public String login(@ModelAttribute LoginDTO loginDTO) {
         User loginUser = authService.getUserByEmail(loginDTO.getEmail());
         if (loginUser == null) {
             return "Нет такого логина";
