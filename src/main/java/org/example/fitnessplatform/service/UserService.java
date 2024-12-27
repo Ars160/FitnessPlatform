@@ -38,13 +38,13 @@ public class UserService {
         return userMapper.toDTO(user);
     }
 
-    public String updateUser(String newName, MultipartFile newAvatar, String oldPassword, String newPassword) {
+    public UserDto updateUser(String newName, MultipartFile newAvatar, String oldPassword, String newPassword) {
         try {
             User existingUser = getCurrentSessionUser();
 
             if (oldPassword != null && !oldPassword.isEmpty()) {
                 if (!passwordEncoder.matches(oldPassword, existingUser.getPassword())) {
-                    return "Неправильный старый пароль";
+                    return null;
                 }
             }
 
@@ -53,12 +53,7 @@ public class UserService {
             }
 
             if (newAvatar != null && !newAvatar.isEmpty()) {
-                try {
-                    existingUser.setAvatar(newAvatar.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return "Ошибка при загрузке аватара";
-                }
+                existingUser.setAvatar(newAvatar.getBytes());
             }
 
             if (newPassword != null && !newPassword.isEmpty()) {
@@ -66,12 +61,10 @@ public class UserService {
             }
 
             userRepository.save(existingUser);
-            return "Данные успешно обновлены";
-        } catch (EntityNotFoundException e) {
-            return e.getMessage();
+            return userMapper.toDTO(existingUser);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Ошибка при обновлении данных пользователя";
+            return null;
         }
     }
 

@@ -27,9 +27,10 @@ public class AuthService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    String folderPath = "C:\\Users\\Mykty\\IdeaProjects\\social-media\\src\\main\\resources";
+    String folderPath = "src/main/resources";
     String fileName = "noavatar.jpg";
     String imagePath = folderPath + File.separator + fileName;
+
 
     public byte[] convertImageToBytes(String imagePath) throws IOException {
         File file = new File(imagePath);
