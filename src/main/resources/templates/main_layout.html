@@ -8,12 +8,9 @@
     <script src="/js/bootstrap.bundle.js"></script>
 </head>
 <body>
+<div class="row" th:insert="navbar.html"> </div>
     <div class="container">
-        <div class="row" th:insert="navbar.html">
-
-        </div>
         <div class="row" layout:fragment="content">
-
         </div>
     </div>
 </body>

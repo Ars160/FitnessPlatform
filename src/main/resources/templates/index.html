@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="main_layout.html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<div class="container" layout:fragment="content">
     <h1>
         ВЫ УСПЕШНО ПРОШЛИ АВТОРИЗАЦИЮ
     </h1>
     <h1 sec:authorize="hasAnyAuthority('ADMIN')">АДМИН</h1>
     <h1 sec:authorize="hasAnyAuthority('USER')">ПОЛЬЗОВАТЕЛЬ</h1>
-</body>
+</div>
 </html>
