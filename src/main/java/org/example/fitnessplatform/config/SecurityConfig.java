@@ -28,25 +28,25 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/register", "/api/auth/login", "/register_page", "/login_page").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
-                        .requestMatchers("/home_page").permitAll() // Разрешаем доступ ко всем пользователям
                         .requestMatchers("/admin-panel").hasRole("ADMIN") // Доступ для администраторов
+                        .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form
-                        .loginPage("/authentificate/sign_in")
-                        .loginProcessingUrl("/authentificate/auth")
-                        .usernameParameter("user_email")
-                        .passwordParameter("user_password")
-                        .failureUrl("/authentificate/sign_in?error=true")
-                        .defaultSuccessUrl("/authentificate/profile", true)
+                        .loginPage("/login_page")
+                        .loginProcessingUrl("/api/auth/login")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
+                        .failureUrl("/login_page?error=true")
+                        .defaultSuccessUrl("/home_page", true)
                         .permitAll()
                 )
 
                 .logout(logout -> logout
-                        .logoutUrl("/authentificate/logout")
-                        .logoutSuccessUrl("/authentificate/sign_in")
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login_page")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
+                            .deleteCookies("JSESSIONID")
                         .permitAll()
                 );
 

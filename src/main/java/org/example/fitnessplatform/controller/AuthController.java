@@ -1,6 +1,5 @@
 package org.example.fitnessplatform.controller;
 
-import org.example.fitnessplatform.dto.LoginDTO;
 import org.example.fitnessplatform.dto.RegistrationDTO;
 import org.example.fitnessplatform.model.User;
 import org.example.fitnessplatform.service.AuthService;
@@ -35,16 +34,6 @@ public class AuthController {
         } else {
             model.addAttribute("message", "Пользователь успешно зарегистрирован");
             return "redirect:/login_page"; // Перенаправление на страницу логина
-        }
-    }
-
-    @PostMapping("/login")
-    public String login(@ModelAttribute LoginDTO loginDTO, Model model) {
-        if (authService.loginUser(loginDTO)) {
-            return "redirect:/home_page"; // Перенаправление на главную страницу
-        } else {
-            model.addAttribute("error", "Неверные данные для входа");
-            return "redirect:/login_page"; // Перенаправление обратно на страницу логина с ошибкой
         }
     }
 }

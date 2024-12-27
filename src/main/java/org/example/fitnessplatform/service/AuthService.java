@@ -1,7 +1,5 @@
 package org.example.fitnessplatform.service;
 
-import org.example.fitnessplatform.dto.LoginDTO;
-import org.example.fitnessplatform.dto.RegistrationDTO;
 import org.example.fitnessplatform.model.Role;
 import org.example.fitnessplatform.model.User;
 import org.example.fitnessplatform.repository.RoleRepository;
@@ -12,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Service
 public class AuthService implements UserDetailsService {
@@ -49,21 +45,4 @@ public class AuthService implements UserDetailsService {
         }
     }
 
-    public boolean loginUser(LoginDTO loginDTO) {
-        User checkUser = userRepository.findByEmail(loginDTO.getEmail());
-        if (checkUser != null) {
-            if (!passwordEncoder.matches(loginDTO.getPassword(), checkUser.getPassword())) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
-
-    }
-
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
 }
