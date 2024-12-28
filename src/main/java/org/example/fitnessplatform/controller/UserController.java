@@ -50,9 +50,5 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{userId}")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public void deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
-    }
+
 }
