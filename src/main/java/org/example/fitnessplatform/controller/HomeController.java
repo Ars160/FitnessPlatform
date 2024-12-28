@@ -36,7 +36,6 @@ public class HomeController {
     public String getAdminPanel() {
         return "admin-panel";
     }
-
     @GetMapping("/training_page")
     public String getTrainingForm() {
         System.out.println("dddd");

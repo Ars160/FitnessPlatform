@@ -12,17 +12,12 @@
                 <div class="list-group d-flex flex-row flex-wrap">
                     <th:block th:each="program : ${programs}">
                         <div class="list-group-item border-0 row">
-                            <h4 th:alt="${program.title}"> </h4>
-                            <a>
+                            <h4 th:text="${program.title}"> </h4>
+                            <a th:href="@{'/training-programs/'+${program.id}}">
                                 <img th:src="@{'data:image/jpeg;base64,' + ${program.getBase64Image()}}" th:alt="${program.image}" />
                             </a>
                             <div>
-                                <a class="text-decoration-none link-opacity-50-hover">
-                                    <span th:text="${program.description}"></span>
-                                </a><br/>
-                                <p class="mb-0 oldprice d-inline" th:alt="${program.type}">
-                                </p>
-                                <p class="mb-0 oldprice d-inline" th:alt="${program.duration}">
+                                <p class="mb-0 oldprice d-inline" th:text="'Duration: ' + ${program.duration} + ' minutes'">
                                 </p>
                             </div>
                         </div>

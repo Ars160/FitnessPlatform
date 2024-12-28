@@ -41,13 +41,14 @@ public class TrainingProgramService {
         return trainingProgramRepository.findAll();
     }
 
-    public Optional<TrainingProgram> getById(Long id){
-        return Optional.of(trainingProgramRepository.findById(id).orElse(new TrainingProgram()));
+    public Optional<TrainingProgram> getById(Long id) {
+        return trainingProgramRepository.findById(id);
     }
 
 
 
-public String updateTrainingProgram(Long id, String newTitle, String newDescription, String newType, Integer newDuration, MultipartFile newImage) {
+
+    public String updateTrainingProgram(Long id, String newTitle, String newDescription, String newType, Integer newDuration, MultipartFile newImage) {
     try {
         TrainingProgram existingTraining = trainingProgramRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Post with id " + id + " not found"));
@@ -69,9 +70,15 @@ public String updateTrainingProgram(Long id, String newTitle, String newDescript
     }
 }
 
-    public void deleteTrainingProgram(Long id){
-        trainingProgramRepository.deleteById(id);
+    public boolean deleteTrainingProgram(Long id) {
+        Optional<TrainingProgram> program = trainingProgramRepository.findById(id);
+        if (program.isPresent()) {
+            trainingProgramRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
+
 
 
 }

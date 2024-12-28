@@ -12,6 +12,9 @@
     <div class="row" th:insert="navbar.html">
     </div>
     <div class="container">
+        <div th:if="${error}" class="alert alert-success mt-3">
+            <span th:text="${error}"></span>
+        </div>
         <div class="row" layout:fragment="content">
         </div>
     </div>

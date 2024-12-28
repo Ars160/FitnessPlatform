@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="main_layout.html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{'/css/trainItem.css'}">
+</head>
+<body>
+<div class="container mt-5 profile-container" layout:fragment="content">
+    <h1 class="mb-4" th:text="${program.title}"></h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex justify-content-center">
+                <img th:src="@{'data:image/jpeg;base64,' + ${program.getBase64Image()}}" class="img-fluid p_item" th:alt="${program.title}" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-2">
+                <p><strong>Duration:</strong> <span th:text="${program.duration} + ' minutes'"></span></p>
+            </div>
+            <p><strong>Type:</strong> <span th:text="${program.type}"></span></p>
+            <p><strong>Description:</strong> <span th:text="${program.description}"></span></p>
+            <p><strong>Trainer:</strong> <span th:text="${trener}"></span></p>
+            <div class="mt-4">
+                <button th:onclick="'enrollProgram(' + ${program.id} + ')'" sec:authorize="hasAuthority('USER')" class="btn btn-success me-2">Enroll</button>
+                <div sec:authorize="hasAuthority('TRAINER')" style="display: inline">
+                    <a th:href="@{'/training-programs/' + ${program.id} + '/edit'}" class="btn btn-primary me-2">Edit</a>
+                    <form th:action="@{'/training-programs/delete/' + ${program.id}}" method="post">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+                <a th:href="@{'/training-programs'}" class="btn btn-secondary">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{'https://code.jquery.com/jquery-3.5.1.slim.min.js'}"></script>
+<script th:src="@{'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js'}"></script>
+<script th:src="@{'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'}"></script>
+<script>
+    function enrollProgram(programId) {
+        // Реализация логики записи на программу
+        console.log('Enroll in program with ID:', programId);
+    }
+
+    function deleteProgram(programId) {
+        // Реализация логики удаления программы
+        console.log('Delete program with ID:', programId);
+    }
+</script>
+</body>
+</html>
