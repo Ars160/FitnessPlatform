@@ -73,17 +73,25 @@ public class UserService {
         }
     }
 
-    public String updateUserRole(Long id, String newRole) {
-        User user = userRepository.findById(id).orElse(null);
+    public String updateUserRole(Long userId, String newRole) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Role role = roleRepository.findByName(newRole);
-        assert user != null;
+        if (role == null) {
+            throw new EntityNotFoundException("Role not found");
+        }
         user.setRole(role);
-        return "Роль успешно обновлена";
+        userRepository.save(user);
+        return "Role updated successfully";
     }
 
+
     public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
-    }
+            if (!userRepository.existsById(userId)) {
+                throw new EntityNotFoundException("User with ID " + userId + " not found.");
+            }
+            userRepository.deleteById(userId);
+        }
+
 
     public User getCurrentSessionUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

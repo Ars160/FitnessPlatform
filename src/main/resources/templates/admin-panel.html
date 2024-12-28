@@ -44,9 +44,15 @@
                                 "style=\"width: 50px; height: 50px; border-radius: 50%;\"></td>";
                             tableUser += "<td>" + userList[i].name + "</td>";
                             tableUser += "<td>" + userList[i].email + "</td>";
-                            tableUser += "<td>" + userList[i].roleName + "</td>";
-                            tableUser += "<td><button class='btn btn-primary btn-sm'>Изменить</button></td>";
-                            tableUser += "<td><button class='btn btn-danger btn-sm' onclick='deleteRole()'>Удалить</button></td>";
+                            tableUser += "<td>" +
+                                "<select class='form-select' onchange='changeRole(" + userList[i].id + ", this.value)'>" +
+                                "<option value='USER' " + (userList[i].roleName === 'USER' ? 'selected' : '') + ">USER</option>" +
+                                "<option value='ADMIN' " + (userList[i].roleName === 'ADMIN' ? 'selected' : '') + ">ADMIN</option>" +
+                                "<option value='TRAINER' " + (userList[i].roleName === 'TRAINER' ? 'selected' : '') + ">TRAINER</option>" +
+                                "</select>" +
+                                "</td>";
+
+                            tableUser += "<td><button class='btn btn-danger btn-sm' onclick='deleteRole(" + userList[i].id + ")'>Удалить</button></td>";
                             tableUser += "</tr>";
                         }
                         document.getElementById("userListBody").innerHTML = tableUser;
@@ -56,36 +62,41 @@
             httpRequest.send();
         }
 
-        function updateRole(){
+        function changeRole(userId, newRole) {
             const httpRequest = new XMLHttpRequest();
-            httpRequest.open("POST","/api/admin/users","true")
-
-            let userId = document.getElementById("id");
-            let avatar = document.getElementById("avatar");
+            httpRequest.open("POST", `/api/admin/${userId}/role?newRole=${newRole}`, true);
 
             httpRequest.onreadystatechange = function () {
-                if(httpRequest.status === 200){
-                    userId = "";
-                    avatar = "";
-                    loadUsers();
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        alert("Role updated successfully.");
+                        loadUsers(); // Перезагрузить список пользователей
+                    } else {
+                        alert("Failed to update role. Error: " + httpRequest.status);
+                    }
                 }
             };
-            let body =  {
-                "id" : userId.value,
-                "avatar" : avatar.value
-            }
+
+            httpRequest.onerror = function () {
+                alert("Network error. Unable to update role.");
+            };
+
+            httpRequest.send();
         }
+
+
         function deleteRole(userId) {
             if (confirm("Are you sure you want to delete this user?")) {
                 const httpRequest = new XMLHttpRequest();
-                httpRequest.open("DELETE", "/api/admin/" + userId, true);
+                httpRequest.open("DELETE", "/api/admin/" + userId, true); // Убедитесь, что URL-адрес корректен
 
                 httpRequest.onreadystatechange = function () {
                     if (httpRequest.readyState === XMLHttpRequest.DONE) {
                         if (httpRequest.status === 200) {
-                            loadUsers();
+                            alert("User deleted successfully.");
+                            loadUsers(); // Перезагружаем список пользователей
                         } else {
-                            alert("Failed to delete user. Please try again.");
+                            alert("Failed to delete user. Error: " + httpRequest.status);
                         }
                     }
                 };
@@ -97,6 +108,7 @@
                 httpRequest.send();
             }
         }
+
     </script>
 
 
