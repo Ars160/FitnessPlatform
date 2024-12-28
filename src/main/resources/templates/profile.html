@@ -135,36 +135,6 @@
             // Отправляем данные формы
             httpRequest.send(formData);
         });
-
-
-        function submitProfileEdit() {
-            const formData = new FormData(document.getElementById("editProfileForm"));
-
-            const httpRequest = new XMLHttpRequest();
-            httpRequest.open("POST", "/api/users/updateProfile", true);
-
-            // Устанавливаем заголовок для отправки данных в формате FormData
-            httpRequest.setRequestHeader("Accept", "application/json");
-
-            httpRequest.onload = function() {
-                if (httpRequest.status === 200) {
-                    const response = JSON.parse(httpRequest.responseText);
-                    if (response.status === "success") {
-                        window.location.href = "/profile";
-                        alert("Данные успешно обновлены");
-                    } else {
-                        alert("Ошибка: " + response.message);
-                        window.location.href = "/profile";
-                    }
-                } else {
-                    alert("Ошибка при обновлении данных: " + JSON.parse(httpRequest.responseText.message));
-                    window.location.href = "/profile";
-                }
-            };
-
-            httpRequest.send(formData);  // Отправка данных на сервер
-        }
-
     </script>
     <script src="/js/bootstrap.bundle.js"></script>
 </div>

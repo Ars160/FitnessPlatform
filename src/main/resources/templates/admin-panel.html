@@ -3,19 +3,18 @@
       layout:decorate="main_layout.html" xmlns:sec="http://www.w3.org/1999/xhtml">
 <div class="container" layout:fragment="content">
 
-
     <div class="row" sec:authorize="hasAnyAuthority('ADMIN')">
         <div class="col-12">
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>AVATAR</th>
-                        <th>NAME</th>
-                        <th>EMAIL</th>
-                        <th>ROLE</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>AVATAR</th>
+                    <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>ROLE</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody id="userListBody">
                 </tbody>
@@ -26,55 +25,82 @@
     <script type="text/javascript">
         loadUsers();
 
-        function loadUsers(){
-
-            const  httpRequest = new XMLHttpRequest();
-            httpRequest.open("GET","/api/admin/users",true);
-            httpRequest.onreadystatechange=function (){
-                if(httpRequest.status == 200){
-
+        function loadUsers() {
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", "/api/admin/users", true);
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState === 4 && httpRequest.status === 200) {
                     let userList = JSON.parse(httpRequest.responseText);
                     let tableUser = "";
 
-                    for(let i = 0; i< userList.length;i++){
-                        tableUser+="<tr>";
-                        tableUser+="<td>"+userList[i].id+"</td>";
+                    for (let i = 0; i < userList.length; i++) {
+                        tableUser += "<tr>";
+                        tableUser += "<td>" + userList[i].id + "</td>";
                         tableUser += "<td><img src=\"data:image/jpeg;base64," + userList[i].avatar + "\" " +
                             "style=\"width: 50px; height: 50px; border-radius: 50%;\"></td>";
-                        tableUser+="<td>"+userList[i].name+"</td>";
-                        tableUser+="<td>"+userList[i].email+"</td>";
-                        tableUser+="<td>"+userList[i].roleName+"</td>";
-                        tableUser+="<td><button class='btn btn-primary btn-sm'>Изменить</button></td>";
-                        tableUser+="</tr>";
+                        tableUser += "<td>" + userList[i].name + "</td>";
+                        tableUser += "<td>" + userList[i].email + "</td>";
+
+                        // Форма с выпадающим списком для изменения роли
+                        tableUser += "<td><form id='roleForm" + userList[i].id + "' method='POST'>" +
+                            "<input type='hidden' name='userId' value='" + userList[i].id + "'>" +
+                            "<select class='form-select' id='roleSelect" + userList[i].id + "' name='role'>";
+
+                        const roles = ['ADMIN', 'USER', 'TRAINER']; // Пример ролей
+                        roles.forEach(function(role) {
+                            const selected = userList[i].roleName === role ? "selected" : "";
+                            tableUser += "<option value='" + role + "' " + selected + ">" + role + "</option>";
+                        });
+
+                        tableUser += "</select></td>";
+                        tableUser += "<td><button type='submit' class='btn btn-primary btn-sm'>Изменить роль</button></td>";
+                        tableUser += "</form>";
+                        tableUser += "</tr>";
                     }
+
                     document.getElementById("userListBody").innerHTML = tableUser;
+
+                    // Назначаем обработчики отправки форм через addEventListener для каждой формы
+                    userList.forEach(function(user) {
+                        const form = document.getElementById('roleForm' + user.id);
+                        form.addEventListener('submit', function (event) {
+                            event.preventDefault();  // Останавливаем стандартное поведение формы
+                            updateRole(user.id);  // Вызываем функцию для обновления роли
+                        });
+                    });
                 }
             }
             httpRequest.send();
         }
 
-        function updateRole(){
-            const httpRequest = new XMLHttpRequest();
-            httpRequest.open("POST","/api/admin/users","true")
+        // Функция для отправки формы и обновления роли пользователя
+        function updateRole(userId) {
+            const roleSelect = document.getElementById("roleSelect" + userId); // Находим select по id
+            if (!roleSelect) {
+                console.log("Role select element not found for user ID: " + userId);
+                return;
+            }
 
-            let userId = document.getElementById("id");
-            let avatar = document.getElementById("avatar");
+            const newRole = roleSelect.value; // Получаем выбранную роль
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("POST", "/api/admin/users/updateRole", true);
+            httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            const params = "id=" + userId + "&role=" + encodeURIComponent(newRole); // Формируем параметры запроса
 
             httpRequest.onreadystatechange = function () {
-                if(httpRequest.status == 200){
-                    userId = "";
-                    avatar = "";
-                    loadUsers();
+                if (httpRequest.readyState === 4 && httpRequest.status === 200) {
+                    loadUsers(); // Перезагружаем список пользователей после обновления роли
+                    alert("Роль успешно изменена!");
+                } else if (httpRequest.readyState === 4) {
+                    alert("Ошибка при изменении роли: " + httpRequest.statusText);
                 }
             };
-            let body =  {
-                "id" : userId.value,
-                "avatar" : avatar.value
-            }
+
+            httpRequest.send(params); // Отправляем запрос
         }
-
     </script>
-
 
     <script src="/js/bootstrap.bundle.js"></script>
 </div>
