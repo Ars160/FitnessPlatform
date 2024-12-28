@@ -24,7 +24,7 @@
             <p><strong>Trainer:</strong> <span th:text="${trener}"></span></p>
             <div class="mt-4">
                 <button th:onclick="'enrollProgram(' + ${program.id} + ')'" sec:authorize="hasAuthority('USER')" class="btn btn-success me-2">Enroll</button>
-                <div sec:authorize="hasAuthority('TRAINER')" style="display: inline">
+                <div th:if="${program.getTrainer().name == #authentication.principal.name}" sec:authorize="hasAuthority('TRAINER')" style="display: inline">
                     <a th:href="@{'/training-programs/' + ${program.id} + '/edit'}" class="btn btn-primary me-2">Edit</a>
                     <form th:action="@{'/training-programs/delete/' + ${program.id}}" method="post">
                         <button type="submit" class="btn btn-danger">Delete</button>

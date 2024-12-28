@@ -25,8 +25,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/register", "/api/auth/login", "/register_page", "/login_page").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/users/**").permitAll()
-//                        .requestMatchers("/admin-panel").hasRole("ADMIN") // Доступ для администраторов
+                        .requestMatchers("/admin-panel").hasAuthority("ADMIN")
+                        .requestMatchers("training_page").hasAuthority("TRAINER")
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
