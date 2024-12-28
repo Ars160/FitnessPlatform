@@ -26,9 +26,10 @@ public class AdminController {
     }
 
     @PostMapping("/api/admin/users/updateRole")
-    public ResponseEntity<Map<String, Object>> updateUserRole(@RequestParam Long id, @RequestParam String role) {
-        userService.updateUserRole(id, role);
+    public ResponseEntity<Map<String, Object>> updateUserRole(@RequestParam Long userId, @RequestParam String role) {
+        System.out.println("AAAAAAAAAAAAAA");
 
+        userService.updateUserRole(userId, role);
         Map<String, Object> response = new HashMap<>();
         return ResponseEntity.ok(response);
     }

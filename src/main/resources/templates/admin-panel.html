@@ -42,7 +42,7 @@
                         tableUser += "<td>" + userList[i].email + "</td>";
 
                         // Форма с выпадающим списком для изменения роли
-                        tableUser += "<td><form id='roleForm" + userList[i].id + "' method='POST'>" +
+                        tableUser += "<td><form action='/api/admin/api/admin/users/updateRole' id='roleForm" + userList[i].id + "' method='POST'>" +
                             "<input type='hidden' name='userId' value='" + userList[i].id + "'>" +
                             "<select class='form-select' id='roleSelect" + userList[i].id + "' name='role'>";
 
