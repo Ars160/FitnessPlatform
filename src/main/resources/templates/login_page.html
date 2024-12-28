@@ -3,44 +3,76 @@
 <head>
     <title>Login Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("loginForm");
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const email = document.getElementById("email").value.trim();
+                const password = document.getElementById("upassword").value.trim();
+
+                const errorDiv = document.getElementById("errorMessage");
+                errorDiv.innerHTML = "";
+
+                if (!email) {
+                    showError("Введите почту.");
+                    return;
+                }
+
+                if (!validateEmail(email)) {
+                    showError("Введите корректный email.");
+                    return;
+                }
+
+                if (!password) {
+                    showError("Введите пароль.");
+                    return;
+                }
+
+                setTimeout(() => form.submit(), 500);
+            });
+
+            function showError(message) {
+                const errorDiv = document.getElementById("errorMessage");
+                errorDiv.innerHTML = `<div class="alert alert-danger">${message}</div>`;
+            }
+
+            function showSuccess(message) {
+                const errorDiv = document.getElementById("errorMessage");
+                errorDiv.innerHTML = `<div class="alert alert-success">${message}</div>`;
+            }
+
+            function validateEmail(email) {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailPattern.test(email);
+            }
+        });
+    </script>
 </head>
 <body>
 <div class="container mt-5 border p-4 rounded" style="width: 400px;">
     <h2>Логин</h2>
 
-    <!-- Error Message -->
-    <div th:if="${error}" class="alert alert-danger mt-3">
-        <span th:text="${error}"></span>
-    </div>
+    <div id="errorMessage" class="mt-3"></div>
 
-    <form th:action="@{/api/auth/login}" method="POST" class="mt-4">
-        <!-- Email -->
+    <form id="loginForm" th:action="@{/api/auth/login}" method="POST" class="mt-4">
         <div class="form-group">
             <label for="email" class="form-label">Почта</label>
-            <input type="email" id="email" name="email" class="form-control" th:value="${email}" required>
-            <p class="error" th:text="${emailError}"></p>
+            <input type="email" id="email" name="email" class="form-control" required>
         </div>
 
-        <!-- Password -->
         <div class="form-group">
             <label for="upassword" class="form-label">Пароль</label>
             <input type="password" id="upassword" name="password" class="form-control" required>
-            <p class="error" th:text="${passwordError}"></p>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Логин</button>
     </form>
 
-    <!-- Registration Link -->
     <div class="mt-3">
-        <label>Нет аккаунта? <a th:href="@{/register_page}">Регистрация</a></label>
+        <label>Нет аккаунта? <a href="/register_page">Регистрация</a></label>
     </div>
-
-    <!-- Success or Error Messages -->
-    <p class="error mt-2" th:text="${error}"></p>
-    <p class="message mt-2" th:text="${message}"></p>
 </div>
-
 </body>
 </html>

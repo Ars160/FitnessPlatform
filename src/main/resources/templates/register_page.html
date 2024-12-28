@@ -3,52 +3,81 @@
 <head>
     <title>Registration Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function validateForm(event) {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            const nameRegex = /^[a-zA-Zа-яА-ЯёЁ\s]+$/;
+            if (name.length < 2 || !nameRegex.test(name)) {
+                event.preventDefault();
+                alert('Имя должно быть длиной не менее 2 символов и содержать только буквы.');
+                return false;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                event.preventDefault();
+                alert('Введите корректный адрес электронной почты.');
+                return false;
+            }
+
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                event.preventDefault();
+                alert('Пароль должен быть не короче 8 символов, содержать одну цифру, одну букву верхнего регистра, одну букву нижнего регистра и один специальный символ.');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                event.preventDefault();
+                alert('Пароли не совпадают!');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </head>
 <body>
 <div class="container mt-5 border p-4 rounded" style="width: 400px;">
     <h2>Регистрация</h2>
 
-    <!-- Display error messages -->
     <div th:if="${error}" class="alert alert-danger mt-3">
         <span th:text="${error}"></span>
     </div>
 
-    <form th:action="@{'/api/auth/register'}" method="POST" class="mt-4">
-        <!-- Name -->
+    <form th:action="@{'/api/auth/register'}" method="POST" class="mt-4" onsubmit="return validateForm()">
         <div class="form-group">
             <label for="name" class="form-label">Имя:</label>
             <input type="text" id="name" name="name" class="form-control" th:value="${name}" required>
         </div>
 
-        <!-- Email -->
         <div class="form-group">
             <label for="email" class="form-label">Почта:</label>
             <input type="email" id="email" name="email" class="form-control" th:value="${email}" required>
         </div>
 
-        <!-- Password -->
         <div class="form-group">
             <label for="password" class="form-label">Пароль:</label>
             <input type="password" id="password" name="password" class="form-control" required>
         </div>
 
-        <!-- Confirm Password -->
         <div class="form-group">
             <label for="confirmPassword" class="form-label">Повторите пароль:</label>
             <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Регистрация</button>
     </form>
 
-    <!-- Redirect to Login -->
     <div class="mt-3">
         <label>
             Уже есть аккаунт? <a th:href="@{'/login'}">Логин</a>
         </label>
     </div>
 </div>
-
 </body>
 </html>
