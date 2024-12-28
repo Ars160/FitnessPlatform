@@ -3,7 +3,9 @@ package org.example.fitnessplatform.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.example.fitnessplatform.dto.UserDto;
 import org.example.fitnessplatform.dto.UserMapper;
+import org.example.fitnessplatform.model.Role;
 import org.example.fitnessplatform.model.User;
+import org.example.fitnessplatform.repository.RoleRepository;
 import org.example.fitnessplatform.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -21,6 +23,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -66,6 +71,14 @@ public class UserService {
             e.printStackTrace();
             return e.getMessage();
         }
+    }
+
+    public String updateUserRole(Long id, String newRole) {
+        User user = userRepository.findById(id).orElse(null);
+        Role role = roleRepository.findByName(newRole);
+        assert user != null;
+        user.setRole(role);
+        return "Роль успешно обновлена";
     }
 
     public void deleteUser(Long userId) {
