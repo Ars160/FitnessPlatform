@@ -1,0 +1,32 @@
+{
+  "Products": [
+    {
+      "id": "aba15",
+      "product_name": "BAtonchik",
+      "price": 2019,
+      "quantity": 103,
+      "category_id": "10edu"
+    },
+    {
+      "id": "80ed",
+      "product_name": "Toyota 30",
+      "price": 2005,
+      "quantity": 13000,
+      "category_id": "aba156"
+    }
+  ],
+  "Categories": [
+    {
+      "id": "10edu",
+      "name": "SUV"
+    },
+    {
+      "id": "aba156",
+      "name": "Sedan"
+    },
+    {
+      "id": "aba150",
+      "name": "Hatchback"
+    }
+  ]
+}

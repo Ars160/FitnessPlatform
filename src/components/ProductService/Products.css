@@ -1,0 +1,24 @@
+
+.list-group-item {
+    align-items: center;
+    padding: 10px;
+}
+
+.list-group-item img {
+    max-width: 250px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.8s ease;
+    border: 1px solid #ccc; 
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.list-group-item img:hover {
+    transform: scale(1.1);
+    border: none;
+}
+
+.oldprice{
+    opacity: .6;
+}
+
